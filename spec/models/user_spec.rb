@@ -2,43 +2,16 @@
 
 require 'rails_helper'
 require 'spec_helper'
+require 'model_helper'
 
-if RUBY_VERSION >= '2.6.0'
-  if Rails.version < '5'
-    class ActionController::TestResponse < ActionDispatch::TestResponse
-      def recycle!
-        @mon_mutex_owner_object_id = nil
-        @mon_mutex = nil
-        initialize
-      end
-    end
-  else
-    puts 'Monkeypatch for ActionController::TestResponse no longer needed'
-  end
-end
+ModelHelper.initial_check
 
 describe User do
   describe 'methods' do
     before do
-      @user1 = described_class.create!({
-                                         provider:   'github',
-                                         uid:        '12345',
-                                         email:      'github_test@example.com',
-                                         first_name: 'Github',
-                                         last_name:  'Test Developer',
-                                         created_at: '2023-11-18 22:13:11',
-                                         updated_at: '2023-11-18 22:13:11'
-                                       })
+      @user1 = ModelHelper.init_github_user
 
-      @user2 = described_class.create!({
-                                         provider:   'google_oauth2',
-                                         uid:        '100000000000000000000',
-                                         email:      'google_test@example.com',
-                                         first_name: 'Google',
-                                         last_name:  'Test Developer',
-                                         created_at: '2023-11-18 22:12:50',
-                                         updated_at: '2023-11-18 22:12:50'
-                                       })
+      @user2 = ModelHelper.init_google_user
     end
 
     it 'call name' do
