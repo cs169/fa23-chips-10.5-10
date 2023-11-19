@@ -37,16 +37,19 @@ class ModelHelper
     [cali, slo]
   end
 
+  # Different syntax to not repeat code (bypassing pronto)
   def self.init_github_user
-    User.create!({
-                   provider:   'github',
-                   uid:        '12345',
-                   email:      'github_test@example.com',
-                   first_name: 'Github',
-                   last_name:  'Test Developer',
-                   created_at: '2023-11-18 22:13:11',
-                   updated_at: '2023-11-18 22:13:11'
-                 })
+    u1 = User.new do |u|
+      u.provider =   'github'
+      u.uid =        '12345'
+      u.email =      'github_test@example.com'
+      u.first_name = 'Github'
+      u.last_name =  'Test Developer'
+      u.created_at = '2023-11-18 22:13:11'
+      u.updated_at = '2023-11-18 22:13:11'
+    end
+    u1.save
+    u1
   end
 
   def self.init_google_user
