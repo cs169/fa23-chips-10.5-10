@@ -18,23 +18,37 @@ class ModelHelper
                     updated_at:   '2023-11-18 21:17:34' })
   end
 
-  def self.init_slo
-    cali = init_california
+  def self.init_state(state_name, state_symbol, state_code)
+    State.create!({ name:         state_name,
+                    symbol:       state_symbol,
+                    fips_code:    state_code,
+                    is_territory: 0,
+                    lat_min:      -132.325472,
+                    lat_max:      -124.132464,
+                    long_min:     34.43423,
+                    long_max:     -133.148482,
+                    created_at:   '2023-11-18 21:17:38',
+                    updated_at:   '2023-11-18 21:17:38' })
+  end
 
-    slo = County.new do |u|
-      u.name = 'San Luis Obispo County',
-               u.state_id = 6,
-               u.fips_code = 79,
+  def self.init_county(state_name, state_symbol, state_code, county_name, county_code)
+    diff_state = init_state(state_name, state_symbol, state_code)
+    diff_county = County.new do |u|
+      u.name = county_name,
+               u.state_id = state_code,
+               u.fips_code = county_code,
                u.fips_class = 'H1',
                u.created_at = '2023-11-18 21:17:38',
                u.updated_at = '2023-11-18 21:17:38'
     end
+    diff_state.counties = [diff_county]
+    diff_state.save
+    diff_county.save
+    [diff_state, diff_county]
+  end
 
-    cali.counties = [slo]
-
-    cali.save
-    slo.save
-    [cali, slo]
+  def self.init_slo
+    init_county('California', 'CA', 6, 'San Luis Obispo County', 79)
   end
 
   # Different syntax to not repeat code (bypassing pronto)
@@ -79,5 +93,27 @@ class ModelHelper
     else
       puts 'Monkeypatch for ActionController::TestResponse no longer needed'
     end
+  end
+
+  def self.create_event(county, name)
+    Event.create!(
+      name:        name,
+      description: 'Annual pride parade',
+      county:      county,
+      start_time:  '2023-12-16 21:17:47',
+      end_time:    '2023-12-16 22:17:47'
+    )
+  end
+
+  def self.mock_google_auth
+    {
+      'uid'      => '123545',
+      'provider' => 'google_oauth2',
+      'info'     => {
+        'first_name' => 'John',
+        'last_name'  => 'Cena',
+        'email'      => 'example@gmail.com'
+      }
+    }
   end
 end
