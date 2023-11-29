@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'google/apis/civicinfo_v2'
+
 class MapController < ApplicationController
   # Render the map of the United States.
   def index
@@ -24,6 +26,21 @@ class MapController < ApplicationController
     handle_county_not_found && return if @county.nil?
 
     @county_details = @state.counties.index_by(&:std_fips_code)
+  end
+
+  def representative_by_county
+    @state = State.find_by(symbol: params[:state_symbol].upcase)
+    handle_state_not_found && return if @state.nil?
+
+    @county = get_requested_county @state.id
+    handle_county_not_found && return if @county.nil?
+
+    service = Google::Apis::CivicinfoV2::CivicInfoService.new
+    service.key = Rails.application.credentials[:GOOGLE_API_KEY]
+    result = service.representative_info_by_address(county)
+    @representatives = Representative.civic_api_to_representative_params(result)
+
+    render 'representatives/search'
   end
 
   private
