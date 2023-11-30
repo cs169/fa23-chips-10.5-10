@@ -39,7 +39,6 @@ describe Representative do
       res = described_class.civic_api_to_representative_params(@rep_info)
       expect(res.length).to eq 1
       @biden_entries = described_class.where(name: 'Joe Biden')
-      p @biden_entries
       expect(@biden_entries.size).to eq 1
     end
   end
