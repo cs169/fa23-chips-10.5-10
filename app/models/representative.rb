@@ -6,6 +6,14 @@ class Representative < ApplicationRecord
 
   # validates :address, :city, :state, :zip, :party, :photo_url, presence: true
 
+  def self.civic_api_to_representative_param(rep_info, name, title)
+    reps = civic_api_to_representative_params(rep_info)
+
+    reps.each { |rep| @to_return = rep if rep.name == name && rep.title == title }
+
+    @to_return
+  end
+
   def self.civic_api_to_representative_params(rep_info)
     reps = []
     rep_info.officials.each_with_index do |official, index|
