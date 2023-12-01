@@ -41,5 +41,10 @@ describe Representative do
       @biden_entries = described_class.where(name: 'Joe Biden')
       expect(@biden_entries.size).to eq 1
     end
+
+    it 'call param method' do
+      res = described_class.civic_api_to_representative_param(@rep_info, 'Joe Biden', 'President of the United States')
+      expect(res.name).to eq 'Joe Biden'
+    end
   end
 end
