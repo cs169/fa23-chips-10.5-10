@@ -1,1 +1,28 @@
-<p>Hello you are on the CampaignFinance url</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h1>Table of Top 20 People in <%= @category_correct.humanize %></h1>
+        <div class="table-responsive-md pt-5">
+          <table class="table table-striped table-hover" id="top-people">
+            <thead class="thead-dark">
+              <tr>
+                <th>Name</th>
+                <th>Party</th>
+                <th><%= @category_correct.humanize %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @top_people.each do |person| %>
+                <tr>
+                <% name = person["name"].split(',').reverse.map(&:strip).join(' ') %>
+                  <td><%= name %></td>
+                  <td><%= person["party"] %></td>
+                  <td><%= person[@category_correct] %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+</div>
