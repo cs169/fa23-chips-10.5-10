@@ -8,10 +8,11 @@ class Representative < ApplicationRecord
 
   def self.civic_api_to_representative_param(rep_info, name, title)
     reps = civic_api_to_representative_params(rep_info)
-
-    reps.each { |rep| @to_return = rep if rep.name == name && rep.title == title }
-
-    @to_return
+    reps.each do |rep|
+      Rails.logger.debug rep.name
+      Rails.logger.debug rep.title
+    end
+    reps.find { |rep| rep.name == name && rep.title == title }
   end
 
   def self.civic_api_to_representative_params(rep_info)
