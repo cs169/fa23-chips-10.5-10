@@ -1,0 +1,16 @@
+<div style="text-align: center"> 
+  <h1 style="padding-top: 10px">Search for the Top 20 Candidates in Specific Financial Category</h1>
+  <b>
+  <%= form_with url: "/campaign_finances", :html => { :style => 'padding-top: 15px' }, method: :get do |form| %>
+    <%= form.label :category, "Category: " %> 
+    <%= form.select :category, options_for_select(@category_options, 'candidate-loan')%>
+    <span style="margin-left: 20px;">
+    <%= form.label :cycle, "Cycle: " %>
+    </span>
+    <span style="margin-right: 20px;">
+    <%= form.select :cycle, @cycle_options%>
+    </span>
+    <%= form.submit "Search", :class => 'btn btn-primary'%>
+  <% end %>
+  </b>
+</div>
