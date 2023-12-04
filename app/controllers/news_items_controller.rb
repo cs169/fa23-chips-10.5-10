@@ -6,6 +6,7 @@ class NewsItemsController < ApplicationController
 
   def index
     @news_items = @representative.news_items
+    @county_address = params[:county_address]
   end
 
   def show; end
