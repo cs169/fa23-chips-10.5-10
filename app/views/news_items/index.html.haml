@@ -3,7 +3,7 @@
         .col-md-8.offset-md-2
             %h1.text-center
                 Listing News Articles for
-                = link_to @representative.name, show_representative_path(address: @representative.address,
+                = link_to @representative.name, show_representative_path(address: @county_address,
                 name: @representative.name, title: @representative.title)
             .clearfix.my-4
                 .float-right

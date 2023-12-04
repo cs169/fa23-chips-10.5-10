@@ -13,10 +13,11 @@
                         - @representatives.each_with_index do |rep, _index|
                             %tr
                                 %td
-                                    = link_to rep.name, show_representative_path(address: rep.address,
+                                    = link_to rep.name, show_representative_path(address: @county_address,
                                     name: rep.name, title: rep.title)
                                 %td= rep.title
                                 %td
-                                    = link_to representative_news_items_path(rep.id), class: 'btn btn-primary' do
+                                    = link_to representative_news_items_path(rep.id,
+                                    county_address: @county_address), class: 'btn btn-primary' do
                                         %i.fas.fa-newspaper
                                         News Articles
